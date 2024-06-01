@@ -55,7 +55,7 @@ const CoinList = () => {
 
   return (
     <div className="h-full w-full">
-      <div className="flex justify-end">
+      <div className="flex justify-end py-3">
         <Select
           placeholder="통화를 선택해주세요"
           className="max-w-52"
