@@ -1,12 +1,14 @@
 import toast from 'react-hot-toast';
 import { CoinListRequestParam } from 'src/entity/coin-list/model';
-import { useListBookmarkStore } from 'src/entity/coin-list/store/list-bookmark';
-import { useListSettingStore } from 'src/entity/coin-list/store/list-setting';
-import ListSettingSelect from 'src/feature/coin-list/ui/list-setting-select';
+import { useListBookmarkStore } from 'src/shared/store/list-bookmark';
+import { useListSettingStore } from 'src/shared/store/list-setting';
 import CoinListTable from 'src/widget/coin-list/ui/coin-list-table';
+import ListNone from 'src/widget/coin-list/ui/list-none';
+import { useShallow } from 'zustand/react/shallow';
 
 const CoinBookmarkList = () => {
-  const { setting } = useListSettingStore();
+  const vs_currency = useListSettingStore(useShallow((state) => state.setting.vs_currency));
+  const per_page = useListSettingStore(useShallow((state) => state.setting.per_page));
   const { bookmarkList, isExistBookmark, addBookmark, removeBookmark } = useListBookmarkStore();
 
   const handleBookmarkClick = (coinId: string) => {
@@ -20,7 +22,8 @@ const CoinBookmarkList = () => {
   };
 
   const coinListParams = {
-    ...setting,
+    vs_currency,
+    per_page,
     price_change_percentage: '1h,24h,7d',
     precision: '2',
     order: 'market_cap_desc',
@@ -28,8 +31,11 @@ const CoinBookmarkList = () => {
 
   return (
     <div className="h-full w-full">
-      <ListSettingSelect />
-      <CoinListTable coinListParams={coinListParams} onClickBookmark={handleBookmarkClick} filterIds={bookmarkList} />
+      {bookmarkList.length > 0 ? (
+        <CoinListTable coinListParams={coinListParams} onClickBookmark={handleBookmarkClick} filterIds={bookmarkList} />
+      ) : (
+        <ListNone />
+      )}
     </div>
   );
 };
