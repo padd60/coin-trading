@@ -3,6 +3,7 @@ import { HtmlHTMLAttributes, useEffect, useState } from 'react';
 import { CoinCurrency, CoinListRequestParam } from 'src/entity/coin-list/model';
 import { useGetCoinList } from 'src/entity/coin-list/query/useGetCoinList';
 import { useListBookmarkStore } from 'src/entity/coin-list/store/list-bookmark';
+import ListNone from './list-none';
 
 type CoinListTableProps = {
   coinListParams: CoinListRequestParam;
@@ -38,7 +39,7 @@ const CoinListTable = ({ coinListParams, onClickBookmark, filterIds }: CoinListT
     return defaultStyle;
   };
 
-  return (
+  return resultCoinList.length > 0 ? (
     <Table>
       <TableHeader>
         <TableColumn width={30} align="center">
@@ -95,6 +96,8 @@ const CoinListTable = ({ coinListParams, onClickBookmark, filterIds }: CoinListT
         )}
       </TableBody>
     </Table>
+  ) : (
+    <ListNone />
   );
 };
 
