@@ -21,7 +21,7 @@
     background-size: cover;
   }
   
-  .checkbox-container input:checked + .checkmark {
+  .checkbox-container .checkmark.checked {
     background-image: url('/src//shared//assets/filled_star.png');
     background-size: cover;
   }
