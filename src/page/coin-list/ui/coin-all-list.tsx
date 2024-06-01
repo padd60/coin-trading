@@ -12,7 +12,7 @@ const CoinAllList = () => {
   const queryClient = useQueryClient();
 
   const { setting } = useListSettingStore();
-  const { bookmarkList, addBookmark, removeBookmark } = useListBookmarkStore();
+  const { isExistBookmark, addBookmark, removeBookmark } = useListBookmarkStore();
 
   const coinListParams = {
     ...setting,
@@ -26,7 +26,7 @@ const CoinAllList = () => {
   }, [coinListParams, queryClient]);
 
   const handleBookmarkClick = (coinId: string) => {
-    if (bookmarkList.includes(coinId)) {
+    if (isExistBookmark(coinId)) {
       removeBookmark(coinId);
     } else {
       addBookmark(coinId);
