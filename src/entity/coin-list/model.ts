@@ -14,6 +14,9 @@ export type CoinData = {
   low_24h: number;
   price_change_24h: number;
   price_change_percentage_24h: number;
+  price_change_percentage_1h_in_currency?: number;
+  price_change_percentage_24h_in_currency?: number;
+  price_change_percentage_7d_in_currency?: number;
   market_cap_change_24h: number;
   market_cap_change_percentage_24h: number;
   circulating_supply: number;
@@ -36,7 +39,7 @@ export type Roi = {
 };
 
 export type CoinListRequestParam = {
-  vs_currency: 'usd' | 'krw';
+  vs_currency: CoinCurrency;
   ids?: string;
   category?: string;
   order?: CoinListOrder;
@@ -47,6 +50,8 @@ export type CoinListRequestParam = {
   locale?: CoinListLocale;
   precision?: string;
 };
+
+export type CoinCurrency = 'usd' | 'krw';
 
 export type CoinListOrder = 'market_cap_asc' | 'market_cap_desc' | 'volume_asc' | 'volume_desc' | 'id_asc' | 'id_desc';
 
