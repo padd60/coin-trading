@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.checkbox-container {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  .checkbox-container .checkmark {
+    width: 24px;
+    height: 24px;
+    background-image: url('/src/shared/assets/unfilled_star.png');
+    background-size: cover;
+  }
+  
+  .checkbox-container input:checked + .checkmark {
+    background-image: url('/src//shared//assets/filled_star.png');
+    background-size: cover;
+  }
+  
