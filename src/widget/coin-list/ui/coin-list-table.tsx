@@ -1,9 +1,9 @@
 import { TableRow, TableCell, Table, TableBody, TableColumn, TableHeader } from '@nextui-org/react';
-import { HtmlHTMLAttributes, useEffect, useState } from 'react';
 import { CoinCurrency, CoinListRequestParam } from 'src/entity/coin-list/model';
 import { useGetCoinList } from 'src/entity/coin-list/query/useGetCoinList';
 import { useListBookmarkStore } from 'src/entity/coin-list/store/list-bookmark';
 import ListNone from './list-none';
+import BookmarkCheckBox from 'src/feature/coin-list/ui/bookmark-check-box';
 
 type CoinListTableProps = {
   coinListParams: CoinListRequestParam;
@@ -72,7 +72,7 @@ const CoinListTable = ({ coinListParams, onClickBookmark, filterIds }: CoinListT
                   onClickBookmark(id);
                 }}
               >
-                <StarCheckbox check={isExistBookmark(id)} />
+                <BookmarkCheckBox check={isExistBookmark(id)} />
               </TableCell>
               <TableCell className="font-bold">{name}</TableCell>
               <TableCell>{symbol.toLocaleUpperCase()}</TableCell>
@@ -98,29 +98,6 @@ const CoinListTable = ({ coinListParams, onClickBookmark, filterIds }: CoinListT
     </Table>
   ) : (
     <ListNone />
-  );
-};
-
-type StarCheckboxProps = {
-  check?: boolean;
-} & HtmlHTMLAttributes<HTMLDivElement>;
-
-const StarCheckbox = ({ check = false }: StarCheckboxProps) => {
-  const [checked, setChecked] = useState(check);
-
-  const handleCheckboxChange = () => {
-    setChecked(!checked);
-  };
-
-  useEffect(() => {
-    setChecked(check);
-  }, [check]);
-
-  return (
-    <label className="checkbox-container">
-      <input type="checkbox" checked={checked} onChange={handleCheckboxChange} />
-      <span className="checkmark inline-block" />
-    </label>
   );
 };
 
