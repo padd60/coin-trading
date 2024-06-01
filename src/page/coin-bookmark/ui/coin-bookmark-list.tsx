@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import { CoinListRequestParam } from 'src/entity/coin-list/model';
 import { useListBookmarkStore } from 'src/entity/coin-list/store/list-bookmark';
 import { useListSettingStore } from 'src/entity/coin-list/store/list-setting';
@@ -11,8 +12,10 @@ const CoinBookmarkList = () => {
   const handleBookmarkClick = (coinId: string) => {
     if (isExistBookmark(coinId)) {
       removeBookmark(coinId);
+      toast.success('북마크가 해제되었습니다.');
     } else {
       addBookmark(coinId);
+      toast.success('북마크가 추가되었습니다.');
     }
   };
 

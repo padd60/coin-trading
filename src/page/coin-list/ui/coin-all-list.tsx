@@ -1,6 +1,7 @@
 import { Spinner } from '@nextui-org/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, Suspense } from 'react';
+import toast from 'react-hot-toast';
 import { CoinListRequestParam } from 'src/entity/coin-list/model';
 import { coinList } from 'src/entity/coin-list/query/queryKey';
 import { useListBookmarkStore } from 'src/entity/coin-list/store/list-bookmark';
@@ -28,8 +29,10 @@ const CoinAllList = () => {
   const handleBookmarkClick = (coinId: string) => {
     if (isExistBookmark(coinId)) {
       removeBookmark(coinId);
+      toast.success('북마크가 해제되었습니다.');
     } else {
       addBookmark(coinId);
+      toast.success('북마크가 추가되었습니다.');
     }
   };
 
