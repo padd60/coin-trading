@@ -7,3 +7,5 @@ export interface AxiosClient extends AxiosInstance {
   patch: <T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig) => Promise<T>;
   delete: <T = unknown>(url: string, config?: AxiosRequestConfig) => Promise<T>;
 }
+
+export type DefaultQueryKeys = 'coin-list';
