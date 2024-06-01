@@ -1,7 +1,7 @@
 import { Select, SelectItem } from '@nextui-org/react';
 import { CoinCurrency } from 'src/entity/coin-list/model';
-import { useListSettingStore } from 'src/entity/coin-list/store/list-setting';
 import { PerPageSelect } from '../model';
+import { useListSettingStore } from 'src/shared/store/list-setting';
 
 const ListSettingSelect = () => {
   const { setting, updateSetting } = useListSettingStore();

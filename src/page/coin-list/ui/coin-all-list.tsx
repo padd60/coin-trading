@@ -1,30 +1,32 @@
 import { Spinner } from '@nextui-org/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useEffect, Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { CoinListRequestParam } from 'src/entity/coin-list/model';
 import { coinList } from 'src/entity/coin-list/query/queryKey';
-import { useListBookmarkStore } from 'src/entity/coin-list/store/list-bookmark';
-import { useListSettingStore } from 'src/entity/coin-list/store/list-setting';
 import ListSettingSelect from 'src/feature/coin-list/ui/list-setting-select';
+import { useListBookmarkStore } from 'src/shared/store/list-bookmark';
+import { useListSettingStore } from 'src/shared/store/list-setting';
 import CoinListTable from 'src/widget/coin-list/ui/coin-list-table';
+import { useShallow } from 'zustand/react/shallow';
 
 const CoinAllList = () => {
   const queryClient = useQueryClient();
-
-  const { setting } = useListSettingStore();
+  const vs_currency = useListSettingStore(useShallow((state) => state.setting.vs_currency));
+  const per_page = useListSettingStore(useShallow((state) => state.setting.per_page));
   const { isExistBookmark, addBookmark, removeBookmark } = useListBookmarkStore();
 
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: coinList.list.queryKey });
+  }, [queryClient, vs_currency, per_page]);
+
   const coinListParams = {
-    ...setting,
+    vs_currency,
+    per_page,
     price_change_percentage: '1h,24h,7d',
     precision: '2',
     order: 'market_cap_desc',
   } satisfies CoinListRequestParam;
-
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: coinList.list.queryKey });
-  }, [coinListParams, queryClient]);
 
   const handleBookmarkClick = (coinId: string) => {
     if (isExistBookmark(coinId)) {
