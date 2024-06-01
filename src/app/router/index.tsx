@@ -10,7 +10,7 @@ const router = createBrowserRouter(
       ...route,
       element: (
         <Suspense fallback={<Loading />}>
-          <div className="h-screen w-screen">{route.element}</div>
+          <div className="h-screen w-screen overflow-auto">{route.element}</div>
         </Suspense>
       ),
       errorElement: <ErrorPage />,
