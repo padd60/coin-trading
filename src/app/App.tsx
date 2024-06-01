@@ -12,6 +12,7 @@ const queryClient = new QueryClient({
         console.log({ err }, 'queries 오류');
         return true;
       },
+      refetchOnMount: false,
     },
     mutations: {
       onError(err) {
