@@ -10,8 +10,8 @@ export const useGetCoinList = (params: CoinListRequestParam) => {
     queryKey: coinList.list.queryKey,
     queryFn: ({ pageParam }) => getCoinList({ ...params, page: pageParam }),
     initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      return lastPage.length < limit ? undefined : limit;
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.length < limit ? undefined : allPages.length + 1;
     },
   });
 };
