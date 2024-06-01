@@ -13,12 +13,13 @@ const Layout = ({ children }: LayoutProps) => {
         size="lg"
         classNames={{
           cursor: '!bg-white',
+          tab: 'p-5',
         }}
       >
-        <Tab title="가상자산 시세목록" className="h-fit p-5 text-2xl font-bold">
+        <Tab title="가상자산 시세목록" className="h-fit text-2xl font-bold">
           {children}
         </Tab>
-        <Tab title="북마크 목록" className="h-fit p-5 text-2xl font-bold">
+        <Tab title="북마크 목록" className="h-fit text-2xl font-bold">
           {children}
         </Tab>
       </Tabs>
