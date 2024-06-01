@@ -1,4 +1,4 @@
-export default function ErrorPage() {
+const ErrorPage = () => {
   const refreshPage = () => {
     window.location.reload();
   };
@@ -10,4 +10,6 @@ export default function ErrorPage() {
       <button onClick={refreshPage}> 새로고침 하기 </button>
     </div>
   );
-}
+};
+
+export default ErrorPage;
