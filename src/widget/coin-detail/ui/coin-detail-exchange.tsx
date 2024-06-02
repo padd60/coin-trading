@@ -1,10 +1,10 @@
-import { Input } from '@nextui-org/react';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { CoinDetailResponse } from 'src/entity/coin-detail/model';
 import { useListSettingStore } from 'src/shared/store/list-setting';
 import { cutSecondDecimal } from 'src/widget/coin-list/lib/utils';
 import { useShallow } from 'zustand/react/shallow';
 import ExchangeImage from 'src/shared/assets/exchange.png';
+import ExchangeInput from 'src/feature/coin-detail/ui/exchange-input';
 
 type CoinDetailExchangeProps = Pick<CoinDetailResponse, 'symbol' | 'market_data'>;
 
@@ -13,13 +13,10 @@ const CoinDetailExchange = ({ symbol, market_data }: CoinDetailExchangeProps) =>
 
   const [coinValue, setCoinValue] = useState('');
 
-  const exchangeCoinToCurrency = useCallback(
-    (value: string) => {
-      const exchangeValue = cutSecondDecimal(Number(value) * market_data.current_price[vs_currency]);
-      setCurrencyValue(exchangeValue !== 0 ? String(exchangeValue) : '');
-    },
-    [market_data.current_price, vs_currency],
-  );
+  const exchangeCoinToCurrency = (value: string) => {
+    const exchangeValue = cutSecondDecimal(Number(value) * market_data.current_price[vs_currency]);
+    setCurrencyValue(exchangeValue !== 0 ? String(exchangeValue) : '');
+  };
 
   const handleCoinValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -81,27 +78,13 @@ const CoinDetailExchange = ({ symbol, market_data }: CoinDetailExchangeProps) =>
     <div className="bg-gray-400 p-8">
       <div>가격 계산</div>
       <div className="mt-3 grid grid-cols-[auto_40px_auto] items-center gap-3">
-        <div className="flex h-12 items-center">
-          <span className="bg-gray-300 p-3 font-bold">{symbol.toLocaleUpperCase()}</span>
-          <Input
-            classNames={{ inputWrapper: 'rounded-none h-full', base: 'h-full', input: 'text-end' }}
-            value={coinValue}
-            onChange={handleCoinValueChange}
-          />
-        </div>
+        <ExchangeInput label={symbol} value={coinValue} onChangeInput={handleCoinValueChange} />
         <div className="flex w-full items-center justify-center">
           <span className="flex h-8 w-8 items-center justify-center">
             <img className="object-contain" src={ExchangeImage} alt="exchange-image" />
           </span>
         </div>
-        <div className="flex h-12 items-center">
-          <span className="bg-gray-300 p-3 font-bold">{vs_currency.toLocaleUpperCase()}</span>
-          <Input
-            classNames={{ inputWrapper: 'rounded-none h-full', base: 'h-full', input: 'text-end' }}
-            value={currencyValue}
-            onChange={handleCurrencyValueChange}
-          />
-        </div>
+        <ExchangeInput label={vs_currency} value={currencyValue} onChangeInput={handleCurrencyValueChange} />
       </div>
     </div>
   );
