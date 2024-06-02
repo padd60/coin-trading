@@ -27,7 +27,9 @@ const CoinDetailInfo = () => {
           links={coinInfo.links}
         />
         <CoinDetailExchange symbol={coinInfo.symbol} market_data={coinInfo.market_data} />
-        <CoinDetailDescription description={coinInfo.description} />
+        {coinInfo.description.ko || coinInfo.description.en ? (
+          <CoinDetailDescription description={coinInfo.description} />
+        ) : null}
       </div>
     </div>
   );
