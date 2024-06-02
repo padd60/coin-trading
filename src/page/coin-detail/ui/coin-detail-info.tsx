@@ -21,15 +21,12 @@ const CoinDetailInfo = () => {
       />
       <ListSettingSelect filterSelect={['currency']} />
       <div className="flex w-full flex-col gap-3">
-        {/* 여기부터 상세 표 */}
         <CoinDetailContent
           market_data={coinInfo.market_data}
           market_cap_rank={coinInfo.market_cap_rank}
           links={coinInfo.links}
         />
-        {/* 여기부터 가격 계산표 */}
         <CoinDetailExchange symbol={coinInfo.symbol} market_data={coinInfo.market_data} />
-        {/* 여기부터 설명 */}
         <CoinDetailDescription description={coinInfo.description} />
       </div>
     </div>
