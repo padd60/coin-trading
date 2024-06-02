@@ -1,9 +1,11 @@
 import { TableRow, TableCell, Table, TableBody, TableColumn, TableHeader, Button } from '@nextui-org/react';
-import { CoinCurrency, CoinListRequestParam } from 'src/entity/coin-list/model';
+import { CoinListRequestParam } from 'src/entity/coin-list/model';
 import { useGetCoinList } from 'src/entity/coin-list/query/useGetCoinList';
 import ListNone from './list-none';
-import BookmarkCheckBox from 'src/feature/coin-list/ui/bookmark-check-box';
 import { useListBookmarkStore } from 'src/shared/store/list-bookmark';
+import { useNavigate } from 'react-router-dom';
+import BookmarkCheckBox from 'src/shared/ui/bookmark-check-box';
+import { convertLocalePrice, percentageStyle, convertPercentage, convertLocaleVolume } from '../lib/utils';
 
 type CoinListTableProps = {
   coinListParams: CoinListRequestParam;
@@ -19,23 +21,10 @@ const CoinListTable = ({ coinListParams, onClickBookmark, filterIds }: CoinListT
 
   const resultCoinList = filterIds ? allCoinList.filter((item) => filterIds.includes(item.id)) : allCoinList;
 
-  const convertPercentage = (value?: number) => (value ? `${Math.round(value * 10) / 10}%` : '');
+  const navigate = useNavigate();
 
-  const convertLocalePrice = (value: number, currency: CoinCurrency) =>
-    currency === 'krw' ? `₩${value.toLocaleString()}` : `$${value.toLocaleString()}`;
-
-  const percentageStyle = (value?: number) => {
-    const defaultStyle = 'w-fit text-end';
-
-    if (!value) return defaultStyle;
-
-    const percentage = Math.round(value * 10) / 10;
-
-    if (percentage < 0) return `${defaultStyle} text-red-500`;
-
-    if (percentage > 0) return `${defaultStyle} text-blue-500`;
-
-    return defaultStyle;
+  const handleClickCoinName = (coinId: string) => {
+    navigate(`/detail/${coinId}`);
   };
 
   return resultCoinList.length > 0 ? (
@@ -63,7 +52,7 @@ const CoinListTable = ({ coinListParams, onClickBookmark, filterIds }: CoinListT
               price_change_percentage_1h_in_currency,
               price_change_percentage_7d_in_currency,
               price_change_percentage_24h_in_currency,
-              total_volume,
+              market_cap_change_24h,
             }) => (
               <TableRow key={id}>
                 <TableCell
@@ -74,7 +63,15 @@ const CoinListTable = ({ coinListParams, onClickBookmark, filterIds }: CoinListT
                 >
                   <BookmarkCheckBox check={isExistBookmark(id)} />
                 </TableCell>
-                <TableCell className="font-bold">{name}</TableCell>
+                <TableCell
+                  className="cursor-pointer font-bold"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleClickCoinName(id);
+                  }}
+                >
+                  {name}
+                </TableCell>
                 <TableCell>{symbol.toLocaleUpperCase()}</TableCell>
                 <TableCell className="w-fit text-end font-bold">
                   {convertLocalePrice(current_price, coinListParams.vs_currency)}
@@ -89,7 +86,7 @@ const CoinListTable = ({ coinListParams, onClickBookmark, filterIds }: CoinListT
                   {convertPercentage(price_change_percentage_24h_in_currency)}
                 </TableCell>
                 <TableCell className="w-fit text-end font-bold">
-                  {convertLocalePrice(total_volume, coinListParams.vs_currency)}
+                  {convertLocaleVolume(market_cap_change_24h, coinListParams.vs_currency)}
                 </TableCell>
               </TableRow>
             ),
