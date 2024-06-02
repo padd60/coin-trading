@@ -1,8 +1,8 @@
 import toast from 'react-hot-toast';
 import { CoinDetailResponse } from 'src/entity/coin-detail/model';
+import CheckBookmark from 'src/feature/coin-list/ui/check-bookmark';
 import { useListBookmarkStore } from 'src/shared/store/list-bookmark';
 import { useListSettingStore } from 'src/shared/store/list-setting';
-import BookmarkCheckBox from 'src/shared/ui/bookmark-check-box';
 import { useShallow } from 'zustand/react/shallow';
 
 type CoinDetailHeaderProps = Pick<CoinDetailResponse, 'id' | 'image' | 'localization' | 'symbol'>;
@@ -23,13 +23,7 @@ const CoinDetailHeader = ({ id, image, localization, symbol }: CoinDetailHeaderP
 
   return (
     <div className="flex w-full items-center gap-2">
-      <span
-        onClick={() => {
-          handleBookmarkClick(id);
-        }}
-      >
-        <BookmarkCheckBox check={isExistBookmark(id)} />
-      </span>
+      <CheckBookmark id={id} onClickBookmark={handleBookmarkClick} check={isExistBookmark(id)} />
       <img src={image.thumb} alt="coin-image" />
       <span className="text-xl font-bold">{`${
         vs_currency === 'krw' ? localization.ko : localization.en

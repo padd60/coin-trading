@@ -4,17 +4,17 @@ import { useGetCoinList } from 'src/entity/coin-list/query/useGetCoinList';
 import ListNone from './list-none';
 import { useListBookmarkStore } from 'src/shared/store/list-bookmark';
 import { useNavigate } from 'react-router-dom';
-import BookmarkCheckBox from 'src/shared/ui/bookmark-check-box';
 import { convertLocalePrice, percentageStyle, convertPercentage, convertLocaleVolume } from '../lib/utils';
+import CheckBookmark from 'src/feature/coin-list/ui/check-bookmark';
+import toast from 'react-hot-toast';
 
 type CoinListTableProps = {
   coinListParams: CoinListRequestParam;
-  onClickBookmark: (value: string) => void;
   filterIds?: string[];
 };
 
-const CoinListTable = ({ coinListParams, onClickBookmark, filterIds }: CoinListTableProps) => {
-  const { isExistBookmark } = useListBookmarkStore();
+const CoinListTable = ({ coinListParams, filterIds }: CoinListTableProps) => {
+  const { isExistBookmark, removeBookmark, addBookmark } = useListBookmarkStore();
   const { data: coins, fetchNextPage } = useGetCoinList(coinListParams);
 
   const allCoinList = coins.pages.flatMap((items) => items);
@@ -25,6 +25,16 @@ const CoinListTable = ({ coinListParams, onClickBookmark, filterIds }: CoinListT
 
   const handleClickCoinName = (coinId: string) => {
     navigate(`/detail/${coinId}`);
+  };
+
+  const handleBookmarkClick = (coinId: string) => {
+    if (isExistBookmark(coinId)) {
+      removeBookmark(coinId);
+      toast.success('북마크가 해제되었습니다.');
+    } else {
+      addBookmark(coinId);
+      toast.success('북마크가 추가되었습니다.');
+    }
   };
 
   return resultCoinList.length > 0 ? (
@@ -55,13 +65,8 @@ const CoinListTable = ({ coinListParams, onClickBookmark, filterIds }: CoinListT
               market_cap_change_24h,
             }) => (
               <TableRow key={id}>
-                <TableCell
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onClickBookmark(id);
-                  }}
-                >
-                  <BookmarkCheckBox check={isExistBookmark(id)} />
+                <TableCell>
+                  <CheckBookmark id={id} onClickBookmark={handleBookmarkClick} check={isExistBookmark(id)} />
                 </TableCell>
                 <TableCell
                   className="cursor-pointer font-bold"
