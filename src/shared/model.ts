@@ -8,4 +8,4 @@ export interface AxiosClient extends AxiosInstance {
   delete: <T = unknown>(url: string, config?: AxiosRequestConfig) => Promise<T>;
 }
 
-export type DefaultQueryKeys = 'coin-list';
+export type DefaultQueryKeys = 'coin-list' | 'coin-detail';
