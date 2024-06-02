@@ -12,6 +12,7 @@ vite + react18 + typescript + yarn을 사용한 프로젝트입니다.
 
 아래와 같은 폴더 구조를 가집니다.
 
+```
 📦src
 ┣ 📂app
 ┃ ┣ 📂router
@@ -54,6 +55,7 @@ vite + react18 + typescript + yarn을 사용한 프로젝트입니다.
 ┣ 📜main.css
 ┣ 📜main.tsx
 ┗ 📜vite-env.d.ts
+```
 
 각 폴더별 의미는 하단 개발 방법론 적용 부분의 FSD 패턴을 참고해주시길 바랍니다.
 
