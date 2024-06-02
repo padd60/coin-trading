@@ -37,10 +37,13 @@ const ListSettingSelect = ({ filterSelect = ['all'] }: ListSettingSelectProps) =
   };
 
   const handleCurrencySelectChange = (key: CoinCurrency) => {
+    if (!key) return;
+
     updateSetting({ vs_currency: key });
   };
 
   const handlePerPageSelectChange = (key: PerPageSelect) => {
+    if (!key) return;
     updateSetting({ per_page: key });
   };
 
@@ -67,7 +70,7 @@ const ListSettingSelect = ({ filterSelect = ['all'] }: ListSettingSelectProps) =
         <Select
           placeholder="통화를 선택해주세요"
           className="max-w-52"
-          defaultSelectedKeys={[vs_currency]}
+          selectedKeys={[vs_currency]}
           classNames={{
             trigger: 'bg-white shadow-none',
           }}
@@ -84,7 +87,7 @@ const ListSettingSelect = ({ filterSelect = ['all'] }: ListSettingSelectProps) =
         <Select
           placeholder="몇개씩 볼지 선택해주세요"
           className="max-w-52"
-          defaultSelectedKeys={[String(per_page)]}
+          selectedKeys={[String(per_page)]}
           classNames={{
             trigger: 'bg-white shadow-none',
           }}
