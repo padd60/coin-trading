@@ -1,9 +1,9 @@
-import { Button } from '@nextui-org/react';
 import { useState } from 'react';
 import { CoinDetailResponse } from 'src/entity/coin-detail/model';
 import { useListSettingStore } from 'src/shared/store/list-setting';
 import { useShallow } from 'zustand/react/shallow';
 import { removeHtmlTags } from '../lib/utils';
+import DetailShowButton from 'src/feature/coin-detail/ui/detail-show-button';
 
 type CoinDetailDescriptionProps = Pick<CoinDetailResponse, 'description'>;
 
@@ -18,16 +18,7 @@ const CoinDetailDescription = ({ description }: CoinDetailDescriptionProps) => {
 
   return (
     <div className="w-full">
-      <Button
-        className="border bg-white p-4"
-        style={{
-          height: 'fit-content',
-        }}
-        fullWidth={true}
-        onClick={handleShowDetailClick}
-      >
-        {showDetail ? '설명닫기' : '설명보기'}
-      </Button>
+      <DetailShowButton isShow={showDetail} onClickShowButton={handleShowDetailClick} />
       {showDetail ? (
         <pre className="w-full text-wrap p-5">{removeHtmlTags(description[vs_currency === 'krw' ? 'ko' : 'en'])}</pre>
       ) : null}
