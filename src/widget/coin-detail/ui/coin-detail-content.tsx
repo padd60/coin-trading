@@ -7,6 +7,7 @@ import {
   convertLocaleVolume,
 } from 'src/widget/coin-list/lib/utils';
 import { useShallow } from 'zustand/react/shallow';
+
 type CoinDetailContentProps = Pick<CoinDetailResponse, 'market_cap_rank' | 'links' | 'market_data'>;
 
 const CoinDetailContent = ({ market_cap_rank, market_data, links }: CoinDetailContentProps) => {
