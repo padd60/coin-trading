@@ -1,4 +1,3 @@
-import toast from 'react-hot-toast';
 import { CoinListRequestParam } from 'src/entity/coin-list/model';
 import { useListBookmarkStore } from 'src/shared/store/list-bookmark';
 import { useListSettingStore } from 'src/shared/store/list-setting';
@@ -9,17 +8,7 @@ import { useShallow } from 'zustand/react/shallow';
 const CoinBookmarkList = () => {
   const vs_currency = useListSettingStore(useShallow((state) => state.setting.vs_currency));
   const per_page = useListSettingStore(useShallow((state) => state.setting.per_page));
-  const { bookmarkList, isExistBookmark, addBookmark, removeBookmark } = useListBookmarkStore();
-
-  const handleBookmarkClick = (coinId: string) => {
-    if (isExistBookmark(coinId)) {
-      removeBookmark(coinId);
-      toast.success('북마크가 해제되었습니다.');
-    } else {
-      addBookmark(coinId);
-      toast.success('북마크가 추가되었습니다.');
-    }
-  };
+  const { bookmarkList } = useListBookmarkStore();
 
   const coinListParams = {
     vs_currency,
@@ -32,7 +21,7 @@ const CoinBookmarkList = () => {
   return (
     <div className="h-full w-full">
       {bookmarkList.length > 0 ? (
-        <CoinListTable coinListParams={coinListParams} onClickBookmark={handleBookmarkClick} filterIds={bookmarkList} />
+        <CoinListTable coinListParams={coinListParams} filterIds={bookmarkList} />
       ) : (
         <ListNone />
       )}
