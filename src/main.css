@@ -2,15 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.checkbox-container {
-    display: inline-block;
-    position: relative;
-    cursor: pointer;
-  }
-  
-  .checkbox-container input {
-    position: absolute;
-    opacity: 0;
+  .checkbox-container{
     cursor: pointer;
   }
   
