@@ -3,10 +3,16 @@ import { CoinCurrency } from 'src/entity/coin-list/model';
 import { PerPageSelect } from '../model';
 import { useListSettingStore } from 'src/shared/store/list-setting';
 import { useNavigate } from 'react-router-dom';
+import { useShallow } from 'zustand/react/shallow';
 
-const ListSettingSelect = () => {
+type ListSettingSelectProps = {
+  filterSelect?: Array<'view' | 'currency' | 'per-page' | 'all'>;
+};
+const ListSettingSelect = ({ filterSelect = ['all'] }: ListSettingSelectProps) => {
   const navigate = useNavigate();
-  const { setting, updateSetting } = useListSettingStore();
+  const vs_currency = useListSettingStore(useShallow((state) => state.setting.vs_currency));
+  const per_page = useListSettingStore(useShallow((state) => state.setting.per_page));
+  const updateSetting = useListSettingStore((state) => state.updateSetting);
 
   const viewType: Array<{ key: string; label: string }> = [
     { key: 'home', label: '전체 보기' },
@@ -31,60 +37,66 @@ const ListSettingSelect = () => {
   };
 
   const handleCurrencySelectChange = (key: CoinCurrency) => {
-    updateSetting({ ...setting, vs_currency: key });
+    updateSetting({ vs_currency: key });
   };
 
   const handlePerPageSelectChange = (key: PerPageSelect) => {
-    updateSetting({ ...setting, per_page: key });
+    updateSetting({ per_page: key });
   };
 
   return (
     <div className="flex justify-end py-3">
-      <Select
-        placeholder="보기 유형을 선택해주세요"
-        className="max-w-52"
-        defaultSelectedKeys={['home']}
-        classNames={{
-          trigger: 'bg-white shadow-none',
-        }}
-        onSelectionChange={([key]) => {
-          handleViewSelectChange(key as string);
-        }}
-      >
-        {viewType.map((type) => (
-          <SelectItem key={type.key}>{type.label}</SelectItem>
-        ))}
-      </Select>
-      <Select
-        placeholder="통화를 선택해주세요"
-        className="max-w-52"
-        defaultSelectedKeys={[setting.vs_currency]}
-        classNames={{
-          trigger: 'bg-white shadow-none',
-        }}
-        onSelectionChange={([key]) => {
-          handleCurrencySelectChange(key as CoinCurrency);
-        }}
-      >
-        {currencyType.map((type) => (
-          <SelectItem key={type.key}>{type.label}</SelectItem>
-        ))}
-      </Select>
-      <Select
-        placeholder="몇개씩 볼지 선택해주세요"
-        className="max-w-52"
-        defaultSelectedKeys={['50']}
-        classNames={{
-          trigger: 'bg-white shadow-none',
-        }}
-        onSelectionChange={([key]) => {
-          handlePerPageSelectChange(key as PerPageSelect);
-        }}
-      >
-        {perPageType.map((type) => (
-          <SelectItem key={type.key}>{type.label}</SelectItem>
-        ))}
-      </Select>
+      {filterSelect.includes('all') || filterSelect.includes('view') ? (
+        <Select
+          placeholder="보기 유형을 선택해주세요"
+          className="max-w-52"
+          defaultSelectedKeys={['home']}
+          classNames={{
+            trigger: 'bg-white shadow-none',
+          }}
+          onSelectionChange={([key]) => {
+            handleViewSelectChange(key as string);
+          }}
+        >
+          {viewType.map((type) => (
+            <SelectItem key={type.key}>{type.label}</SelectItem>
+          ))}
+        </Select>
+      ) : null}
+      {filterSelect.includes('all') || filterSelect.includes('currency') ? (
+        <Select
+          placeholder="통화를 선택해주세요"
+          className="max-w-52"
+          defaultSelectedKeys={[vs_currency]}
+          classNames={{
+            trigger: 'bg-white shadow-none',
+          }}
+          onSelectionChange={([key]) => {
+            handleCurrencySelectChange(key as CoinCurrency);
+          }}
+        >
+          {currencyType.map((type) => (
+            <SelectItem key={type.key}>{type.label}</SelectItem>
+          ))}
+        </Select>
+      ) : null}
+      {filterSelect.includes('all') || filterSelect.includes('per-page') ? (
+        <Select
+          placeholder="몇개씩 볼지 선택해주세요"
+          className="max-w-52"
+          defaultSelectedKeys={[String(per_page)]}
+          classNames={{
+            trigger: 'bg-white shadow-none',
+          }}
+          onSelectionChange={([key]) => {
+            handlePerPageSelectChange(key as PerPageSelect);
+          }}
+        >
+          {perPageType.map((type) => (
+            <SelectItem key={type.key}>{type.label}</SelectItem>
+          ))}
+        </Select>
+      ) : null}
     </div>
   );
 };
